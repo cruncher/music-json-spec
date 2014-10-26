@@ -1,4 +1,4 @@
-Music JSON (proposal)
+# Music JSON proposal
 
 A proposal for a standard way of creating music sequence data in JSON
 
@@ -13,13 +13,11 @@ web apps, and was discussed at Mozilla Festival London 2014.
 This spec is intended as a discussion starter. Please comment, propose ideas and
 make pull requests.
 
-## Example document
+## Example JSON
+
+Here are the first two bars of Dolphin Dance, represented in Music JSON:
 
     {
-        "author": "author"
-
-        "settings": {},
-
         "sequence": [
             [2,   0.5, "note", 76, 0.8],
             [2.5, 0.5, "note", 77, 0.6],
@@ -27,62 +25,81 @@ make pull requests.
             [3.5, 3.5, "note", 74, 1],
             [10,  0.5, "note", 76, 1],
 
-            [0,   4,   "chord", "C∆"],
-            [4,   4,   "chord", "G-"]
-        ]
+            [0, 4, "chord", "C∆"],
+            [4, 4, "chord", "G-"],
+
+            [4, 8, "sequence", []]
+        ],
+        "interpretation": {
+            "time_signature": "4/4"
+        },
+        "rate": 1,
     }
 
 
+## Sequence (array)
 
-## Sequence
-
-A sequence is simply an array of events.
+A sequence is an array of events.
 
     [event1, event2, ... ]
 
-## Event
+## Event (array)
 
-An event is an array describing the timing, duration and type of a event.
+An event is an array describing the timing, duration and type and any extra data
+associated with an event.
 
     [time, duration, type, data ...]
 
-An event has a start time, a duration and a type. An event also contains extra
+An event MUST have a start <code>time</code>, a <code>duration</code> and a
+<code>type</code>. An event also contains extra
 data that is dependent on the type.
 
-#### time
+#### time (float)
 
-<code>time</code> is a float describing a point in time from the time from the
-sequence start time (which is <code>0</code>).
+<code>time</code> is a float describing a point in time from the time the
+sequence is started.
 
-<code>time</code> values are arbitrary. The actual tiem an event is played is
+<code>time</code> values are arbitrary. The actual time an event is played is
 dependent upon the <code>time</code> value of the event AND the rate at which
 the sequence is played. <code>time</code> values do not directly describe
 seconds or beats – although they could if the sequence were played back at the
 correct rate.
 
-#### duration
+#### duration (float)
 
-<code>duration</code> is the length of time the event is to be played for. As
-with <code>time</code>, the resulting duration of an event depends on the speed
-the sequence is played at.
+<code>duration</code> is a float describing the length of time the event is to
+be played for. As with <code>time</code>, the resulting duration of an event
+depends on the speed the sequence is played at.
 
-#### type
+#### type (string)
 
-<code>type</code> describes the type of event. Possible values are:
+A string describing the type of the event. Possible values are:
 
-- <code>"note"</code> A musical note. A note event has the data values <code>note number</code> and <code>note velocity</code>:
+- <code>"note"</code> A musical note. 
+- <code>"chord"</code> A musical symbol describing the current key centre and mode.
+- <code>"sequence"</code> A sequence event carries the data for a sequence array, enabling the playback of nested sequences.
+
+#### data
+
+A <code>"note"</code> event must have the data values <code>note number</code> and <code>note velocity</code>:
 
     [time, duration, "note", number, velocity]
 
-- <code>"chord"</code> A musical symbol describing the current key centre and
-mode of the music, represented as a string.
+A <code>"chord"</code> event must have a string that represents the current key centre and mode:
 
     [time, duration, "chord", symbol]
 
-- <code>"sequence"</code> A sequence event carries the data for a sequence array, enabling the playback of nested sequences.
+A chord event can be used by a music renderer to display chord symbols, or can
+be interpreted by a music generator.
+
+A <code>"sequence"</code> event must have an array that contains the data of a 'child' sequence:
 
     [time, duration, "sequence", array]
 
+## Interpretation (object)
+
+The interpret object contains meta information not directly needed to render the
+music as sound. This includes hints for notation renderers.
 
 ## Implementations
 
@@ -96,3 +113,7 @@ interpreter and renderer that consumes Music JSON.
 - Music XML: <a href="http://www.musicxml.com/for-developers/">http://www.musicxml.com/for-developers/</a>
 - VexFlow: <a href="http://www.vexflow.com/">http://www.vexflow.com/</a>
 
+## Contributions
+
+Only a few very brief discussions have been had, which have served to identify a
+basic need. People involved: Stephen Band, Stelio Tzonis, Al Johri and Jason Sigal.
