@@ -24,20 +24,19 @@ Here are the first two bars of Dolphin Dance, represented in Music JSON:
             [3,   0.5, "note", 79, 1],
             [3.5, 3.5, "note", 74, 1],
             [10,  0.5, "note", 76, 1],
-
             [0, 4, "chord", "C∆"],
             [4, 4, "chord", "G-"],
-
             [4, 8, "sequence", []]
         ],
+
         "interpretation": {
             "time_signature": "4/4",
             "key": "C",
             "transpose": 0
         },
+
         "rate": 1,
     }
-
 
 ## Sequence (array)
 
