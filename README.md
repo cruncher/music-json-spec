@@ -110,7 +110,7 @@ music as sound, but required to render music visually.
 ## Implementations
 
 - <a href="http://labs.cruncher.ch/scribe/">Scribe</a> is a music notation
-interpreter and renderer that consumes Music JSON.
+interpreter and SVG renderer that consumes Music JSON.
 
 ## References
 
