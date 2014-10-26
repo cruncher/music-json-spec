@@ -99,7 +99,13 @@ A <code>"sequence"</code> event must have an array that contains the data of a '
 ## Interpretation (object)
 
 The interpret object contains meta information not directly needed to render the
-music as sound. This includes hints for notation renderers.
+music as sound, but required to render music visually.
+
+    {
+        "time_signature": "4/4",
+        "key": "C",
+        "transpose": 0
+    }
 
 ## Implementations
 
